@@ -23,21 +23,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class AppProvider {
-    constructor(app) {
-        this.app = app;
-    }
-    register() {
-    }
-    async boot() {
-    }
-    async ready() {
-        if (this.app.environment === 'web') {
-            await Promise.resolve().then(() => __importStar(require('../start/socket')));
-        }
-    }
-    async shutdown() {
-    }
-}
-exports.default = AppProvider;
-//# sourceMappingURL=AppProvider.js.map
+const authConfig = {
+    guard: 'api',
+    guards: {
+        api: {
+            driver: 'oat',
+            tokenProvider: {
+                type: 'api',
+                driver: 'database',
+                table: 'api_tokens',
+                foreignKey: 'user_id',
+            },
+            provider: {
+                driver: 'lucid',
+                identifierKey: 'id',
+                uids: ['email'],
+                model: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Models/User'))),
+            },
+        },
+    },
+};
+exports.default = authConfig;
+//# sourceMappingURL=auth.js.map

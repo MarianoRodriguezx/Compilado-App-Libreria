@@ -13,5 +13,10 @@ exports.default = Env_1.default.rules({
     SESSION_DRIVER: Env_1.default.schema.string(),
     DRIVE_DISK: Env_1.default.schema.enum(['local']),
     NODE_ENV: Env_1.default.schema.enum(['development', 'production', 'test']),
+    PG_USER: Env_1.default.schema.string(),
+    PG_PASSWORD: Env_1.default.schema.string.optional(),
+    PG_DB_NAME: Env_1.default.schema.string(),
+    PG_HOST: Env_1.default.schema.string(),
+    PG_PORT: Env_1.default.schema.number(),
 });
 //# sourceMappingURL=env.js.map

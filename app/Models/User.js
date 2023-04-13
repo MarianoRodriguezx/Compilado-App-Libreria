@@ -21,6 +21,45 @@ class User extends Orm_1.BaseModel {
             user.password = await Hash_1.default.make(user.password);
         }
     }
+    static get login() {
+        return [
+            'password',
+            'email'
+        ];
+    }
+    static get register() {
+        return [
+            'password',
+            'email',
+            'username',
+            'role'
+        ];
+    }
+    static get NORMAL() {
+        return {
+            id: 1,
+            code: 'NORMAL'
+        };
+    }
+    static get SUPERVISOR() {
+        return {
+            id: 2,
+            code: 'SUPERVISOR'
+        };
+    }
+    static get ADMIN() {
+        return {
+            id: 3,
+            code: 'ADMIN'
+        };
+    }
+    static get roles() {
+        return [
+            this.NORMAL,
+            this.SUPERVISOR,
+            this.ADMIN
+        ];
+    }
 }
 __decorate([
     (0, Orm_1.column)({ isPrimary: true }),
@@ -31,6 +70,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
+    (0, Orm_1.column)(),
+    __metadata("design:type", String)
+], User.prototype, "username", void 0);
+__decorate([
     (0, Orm_1.column)({ serializeAs: null }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
@@ -38,6 +81,18 @@ __decorate([
     (0, Orm_1.column)(),
     __metadata("design:type", Object)
 ], User.prototype, "rememberMeToken", void 0);
+__decorate([
+    (0, Orm_1.column)(),
+    __metadata("design:type", Boolean)
+], User.prototype, "status", void 0);
+__decorate([
+    (0, Orm_1.column)(),
+    __metadata("design:type", Boolean)
+], User.prototype, "verified", void 0);
+__decorate([
+    (0, Orm_1.column)(),
+    __metadata("design:type", Number)
+], User.prototype, "role", void 0);
 __decorate([
     Orm_1.column.dateTime({ autoCreate: true }),
     __metadata("design:type", luxon_1.DateTime)

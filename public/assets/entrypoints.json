@@ -7,6 +7,14 @@
       "js": [
         "/assets/app.31d6cfe0.js"
       ]
+    },
+    "styles-login": {
+      "css": [
+        "/assets/styles-login.f0f8def6.css"
+      ],
+      "js": [
+        "/assets/styles-login.31d6cfe0.js"
+      ]
     }
   }
 }

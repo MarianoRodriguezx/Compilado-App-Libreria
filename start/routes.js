@@ -4,7 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Route_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Route"));
-Route_1.default.get('/', async ({ view }) => {
+require("./modules/api/auth");
+require("./modules/view/auth");
+Route_1.default.get('/welcome', async ({ view }) => {
     return view.render('welcome');
+});
+Route_1.default.on('/').redirect('/login');
+Route_1.default.get('/test', async ({ response }) => {
+    return response.ok({ data: 'funciona' });
 });
 //# sourceMappingURL=routes.js.map

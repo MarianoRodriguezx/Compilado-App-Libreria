@@ -8,11 +8,30 @@ const HttpExceptionHandler_1 = __importDefault(global[Symbol.for('ioc.use')]("Ad
 class ExceptionHandler extends HttpExceptionHandler_1.default {
     constructor() {
         super(Logger_1.default);
-        this.statusPages = {
-            '403': 'errors/unauthorized',
-            '404': 'errors/not-found',
-            '500..599': 'errors/server-error',
-        };
+    }
+    async handle(error, ctx) {
+        if (error.code === 'E_VALIDATION_FAILURE') {
+            return ctx.response.status(400).send({
+                status: false,
+                message: 'Error de validación',
+                data: error.messages
+            });
+        }
+        if (+error.status === 500) {
+            return ctx.response.status(500).send({
+                status: false,
+                message: 'Error interno en el servidor. Contacta a soporte para continuar.',
+                data: error
+            });
+        }
+        if (error.code === 'E_ROUTE_NOT_FOUND') {
+            return ctx.response.status(404).send({
+                status: false,
+                message: 'Ruta no encontrada',
+                data: error
+            });
+        }
+        return super.handle(error, ctx);
     }
 }
 exports.default = ExceptionHandler;

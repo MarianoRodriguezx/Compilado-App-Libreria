@@ -40,11 +40,9 @@ class FilesController {
             const path = Env_1.default.get('NODE_ENV') === 'development' ? 'testing/images/' : 'oficial/images/';
             const filename = request.input("filename");
             const filePath = `${path}${filename}`;
-            const url = await Drive_1.default.getSignedUrl(filePath, {
-                expiresIn: '30mins'
-            });
+            const url = await Drive_1.default.getUrl(filePath);
             console.log(url);
-            return response.redirect(url);
+            return url;
         }
         catch (error) {
             console.error(error);

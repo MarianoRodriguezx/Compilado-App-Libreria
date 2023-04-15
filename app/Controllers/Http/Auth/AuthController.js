@@ -5,21 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Models/User"));
 const LoginValidator_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Validators/Auth/LoginValidator"));
-const RegisterValidator_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Validators/Auth/RegisterValidator"));
 const Env_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Env"));
 const Route_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Route"));
 class AuthController {
-    async register({ request, response, auth }) {
-        await request.validate(RegisterValidator_1.default);
-        const userData = request.only(User_1.default.register);
-        await User_1.default.create(userData);
-        return response.created({
-            status: true,
-            message: 'Usuario egistrado exitosamente',
-            data: {
-                "user": auth.user
-            }
-        });
+    async register({}) {
+        return "Método obsoleto";
     }
     async login({ request, response, auth, session }) {
         await request.validate(LoginValidator_1.default);

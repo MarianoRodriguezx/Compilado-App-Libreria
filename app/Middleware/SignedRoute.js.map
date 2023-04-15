@@ -1,0 +1,1 @@
+{"version":3,"file":"SignedRoute.js","sourceRoot":"","sources":["../../../app/Middleware/SignedRoute.ts"],"names":[],"mappings":";;AAEA,MAAqB,WAAW;IACvB,KAAK,CAAC,MAAM,CAAC,EAAC,OAAO,EAAE,QAAQ,EAAuB,EAAE,IAAyB;QACtF,IAAI,CAAC,OAAO,CAAC,iBAAiB,EAAE,EAAE;YAChC,OAAO,QAAQ,CAAC,QAAQ,CAAC,YAAY,CAAC,CAAA;SACvC;QACD,MAAM,IAAI,EAAE,CAAA;IACd,CAAC;CACF;AAPD,8BAOC"}

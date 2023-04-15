@@ -16,6 +16,15 @@ exports.default = (0, config_1.driveConfig)({
             serveFiles: true,
             basePath: '/uploads',
         },
+        s3: {
+            driver: 's3',
+            visibility: 'public',
+            key: Env_1.default.get('S3_KEY'),
+            secret: Env_1.default.get('S3_SECRET'),
+            region: Env_1.default.get('S3_REGION'),
+            bucket: Env_1.default.get('S3_BUCKET'),
+            endpoint: Env_1.default.get('S3_ENDPOINT'),
+        },
     },
 });
 //# sourceMappingURL=drive.js.map

@@ -13,5 +13,5 @@ Route_1.default.group(() => {
     Route_1.default.post('logout', 'AuthController.logout');
     Route_1.default.get('profile', 'AuthController.profile');
 })
-    .namespace('App/Controllers/Http/Auth').prefix('api').middleware(['auth']);
+    .namespace('App/Controllers/Http/Auth').middleware(['auth']);
 //# sourceMappingURL=auth.js.map

@@ -24,16 +24,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const authConfig = {
-    guard: 'api',
+    guard: 'web',
     guards: {
-        api: {
-            driver: 'oat',
-            tokenProvider: {
-                type: 'api',
-                driver: 'database',
-                table: 'api_tokens',
-                foreignKey: 'user_id',
-            },
+        web: {
+            driver: 'session',
             provider: {
                 driver: 'lucid',
                 identifierKey: 'id',

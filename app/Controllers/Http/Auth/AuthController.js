@@ -6,58 +6,74 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Models/User"));
 const LoginValidator_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Validators/Auth/LoginValidator"));
 const RegisterValidator_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Validators/Auth/RegisterValidator"));
+const Env_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Env"));
+const Route_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Route"));
 class AuthController {
     async register({ request, response, auth }) {
         await request.validate(RegisterValidator_1.default);
         const userData = request.only(User_1.default.register);
         await User_1.default.create(userData);
-        const token = await auth.use('api').attempt(userData.email, userData.password, {});
         return response.created({
             status: true,
             message: 'Usuario egistrado exitosamente',
             data: {
-                "token": token,
                 "user": auth.user
             }
         });
     }
-    async login({ request, response }) {
+    async login({ request, response, auth, session }) {
         await request.validate(LoginValidator_1.default);
         const userData = request.only(User_1.default.login);
+        const isPrivate = Env_1.default.get('IS_PRIVATE');
         try {
             const user = await User_1.default.findByOrFail('email', userData.email);
             if (!user.status) {
-                response.status(405);
-                return {
-                    status: true,
-                    message: 'Tu cuenta no está activa. Contacta a soporte',
-                    data: {},
-                    isExternalApi: false
-                };
+                session.flash('form', 'Tu cuenta se encuenta desactivada, contactate con el administrador');
+                return response.redirect().back();
             }
-            return response.redirect('/welcome');
+            if (isPrivate) {
+                if (!User_1.default.privateAccess.includes(user.role)) {
+                    session.flash('form', 'Este usuario no tiene acceso permitido');
+                    return response.redirect().back();
+                }
+            }
+            else {
+                if (!User_1.default.publicAccess.includes(user.role)) {
+                    session.flash('form', 'Este usuario no tiene acceso permitido');
+                    return response.redirect().back();
+                }
+            }
+            await auth.use('web').attempt(userData.email, userData.password);
+            if (+user.role === User_1.default.NORMAL.id) {
+                user.verified = true;
+                await user.save();
+                return response.redirect('/dashboard');
+            }
+            else {
+                const signedRoute = Route_1.default.builder()
+                    .params({ userId: auth.user.id })
+                    .makeSigned('/sendMail', { expiresIn: '1m' });
+                return response.redirect(signedRoute);
+            }
         }
         catch (error) {
             console.log(error);
-            return response.redirect('/login');
+            session.flash('form', 'Tu Email o Contraseña son Incorrectos');
+            return response.redirect().back();
         }
     }
     async logout({ auth, response }) {
-        await auth.use('api').revoke();
-        return response.ok({
-            status: true,
-            message: 'Sesión cerrada correctamente',
-            data: {},
-            isExternalApi: false
-        });
+        const user = await User_1.default.findByOrFail('email', auth.user.email);
+        user.verified = false;
+        await user.save();
+        await auth.use('web').logout();
+        return response.redirect('/login');
     }
-    async profile({ auth, response }) {
-        return response.ok({
-            status: true,
-            message: 'Perfil encontrado correctamente',
-            data: auth.user,
-            isExternalApi: false
-        });
+    async profile({ auth, view }) {
+        const data = {
+            user: auth.user
+        };
+        return view.render('pages/auth/profile', data);
     }
 }
 exports.default = AuthController;

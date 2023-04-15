@@ -35,6 +35,16 @@ class User extends Orm_1.BaseModel {
             'role'
         ];
     }
+    static get store() {
+        return this.register;
+    }
+    static get update() {
+        return [
+            'email',
+            'username',
+            'role'
+        ];
+    }
     static get NORMAL() {
         return {
             id: 1,
@@ -58,6 +68,18 @@ class User extends Orm_1.BaseModel {
             this.NORMAL,
             this.SUPERVISOR,
             this.ADMIN
+        ];
+    }
+    static get privateAccess() {
+        return [
+            this.ADMIN.id,
+            this.SUPERVISOR.id
+        ];
+    }
+    static get publicAccess() {
+        return [
+            this.NORMAL.id,
+            this.SUPERVISOR.id
         ];
     }
 }

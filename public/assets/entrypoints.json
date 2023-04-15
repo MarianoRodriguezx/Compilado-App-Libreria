@@ -10,10 +10,26 @@
     },
     "styles-login": {
       "css": [
-        "/assets/styles-login.f0f8def6.css"
+        "/assets/styles-login.53aa2708.css"
       ],
       "js": [
         "/assets/styles-login.31d6cfe0.js"
+      ]
+    },
+    "dashboard-styles": {
+      "css": [
+        "/assets/dashboard-styles.d0d7e876.css"
+      ],
+      "js": [
+        "/assets/dashboard-styles.31d6cfe0.js"
+      ]
+    },
+    "prueba-chida": {
+      "css": [
+        "/assets/prueba-chida.79c1a8b6.css"
+      ],
+      "js": [
+        "/assets/prueba-chida.31d6cfe0.js"
       ]
     }
   }

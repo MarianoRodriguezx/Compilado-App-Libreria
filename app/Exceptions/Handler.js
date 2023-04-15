@@ -25,11 +25,7 @@ class ExceptionHandler extends HttpExceptionHandler_1.default {
             });
         }
         if (error.code === 'E_ROUTE_NOT_FOUND') {
-            return ctx.response.status(404).send({
-                status: false,
-                message: 'Ruta no encontrada',
-                data: error
-            });
+            return ctx.response.redirect('/not-found');
         }
         return super.handle(error, ctx);
     }

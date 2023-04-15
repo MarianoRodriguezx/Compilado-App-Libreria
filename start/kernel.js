@@ -29,6 +29,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Server_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Server"));
 Server_1.default.middleware.register([() => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]("Adonis/Core/BodyParser")))]);
 Server_1.default.middleware.registerNamed({
-    auth: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/Auth')))
+    auth: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/Auth'))),
+    silenthAuth: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/SilentAuth'))),
+    verifyUser: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/VerifyUser'))),
+    signedRoute: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/SignedRoute'))),
+    adminRole: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/AdminRole')))
 });
 //# sourceMappingURL=kernel.js.map

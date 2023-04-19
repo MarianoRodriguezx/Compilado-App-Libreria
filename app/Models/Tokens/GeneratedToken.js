@@ -67,5 +67,12 @@ __decorate([
     Orm_1.column.dateTime({ autoCreate: true, autoUpdate: true }),
     __metadata("design:type", luxon_1.DateTime)
 ], GeneratedToken.prototype, "updatedAt", void 0);
+__decorate([
+    (0, Orm_1.hasOne)(() => User_1.default, {
+        foreignKey: "id",
+        localKey: "generated_by",
+    }),
+    __metadata("design:type", Object)
+], GeneratedToken.prototype, "generatedBy", void 0);
 exports.default = GeneratedToken;
 //# sourceMappingURL=GeneratedToken.js.map

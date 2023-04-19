@@ -25,6 +25,18 @@ class StoreBookValidator {
                 Validator_1.rules.required(),
                 Validator_1.rules.exists({ table: 'editorials', column: 'id' })
             ]),
+            image_file: Validator_1.schema.file({
+                size: '10mb',
+                extnames: ['jpg', 'jpeg', 'gif', 'png'],
+            }, [
+                Validator_1.rules.required()
+            ]),
+            pdf_file: Validator_1.schema.file({
+                size: '50mb',
+                extnames: ['pdf'],
+            }, [
+                Validator_1.rules.required()
+            ])
         });
         this.messages = {
             'name.required': 'El campo nombre es obligatorio',
@@ -40,6 +52,12 @@ class StoreBookValidator {
             'editorial_id.required': 'El campo editorial es obligatorio',
             'editorial_id.number': 'El editorial debe ser de tipo número',
             'editorial_id.exists': 'El editorial ingresado no existe',
+            'image_file.required': 'La imagen es obligatorio',
+            'image_file.size': 'La imagen no debe tener un tamaño mayor a 10mb',
+            'image_file.extnames': 'La imagen no es un formato de imagen válido',
+            'pdf_file.required': 'El pdf es obligatorio',
+            'pdf_file.size': 'El pdf no debe tener un tamaño mayor a 50mb',
+            'pdf_file.extnames': 'El pdf no es un formato de imagen válido',
         };
     }
 }

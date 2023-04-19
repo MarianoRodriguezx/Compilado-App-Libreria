@@ -18,7 +18,7 @@
     },
     "dashboard-styles": {
       "css": [
-        "/assets/dashboard-styles.d0d7e876.css"
+        "/assets/dashboard-styles.1f715efb.css"
       ],
       "js": [
         "/assets/dashboard-styles.31d6cfe0.js"
@@ -26,10 +26,18 @@
     },
     "prueba-chida": {
       "css": [
-        "/assets/prueba-chida.79c1a8b6.css"
+        "/assets/prueba-chida.24388280.css"
       ],
       "js": [
         "/assets/prueba-chida.31d6cfe0.js"
+      ]
+    },
+    "email": {
+      "css": [
+        "/assets/email.3867659f.css"
+      ],
+      "js": [
+        "/assets/email.31d6cfe0.js"
       ]
     }
   }

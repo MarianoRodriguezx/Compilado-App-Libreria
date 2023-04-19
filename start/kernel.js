@@ -33,6 +33,7 @@ Server_1.default.middleware.registerNamed({
     silenthAuth: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/SilentAuth'))),
     verifyUser: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/VerifyUser'))),
     signedRoute: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/SignedRoute'))),
-    adminRole: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/AdminRole')))
+    adminRole: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/AdminRole'))),
+    privilegeRole: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/PrivilegeRole')))
 });
 //# sourceMappingURL=kernel.js.map

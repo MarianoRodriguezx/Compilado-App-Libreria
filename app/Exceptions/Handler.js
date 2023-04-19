@@ -24,7 +24,7 @@ class ExceptionHandler extends HttpExceptionHandler_1.default {
                 data: error
             });
         }
-        if (error.code === 'E_ROUTE_NOT_FOUND') {
+        if (['E_ROUTE_NOT_FOUND', 'E_ROW_NOT_FOUND'].includes(error.code)) {
             return ctx.response.redirect('/not-found');
         }
         return super.handle(error, ctx);

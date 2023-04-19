@@ -49,6 +49,12 @@ exports.users = [
         username: "Mariano Admin",
         password: "12345678",
         role: 3,
+    },
+    {
+        email: "americaloa145@gmail.com",
+        username: "América Admin",
+        password: "12345678",
+        role: 3,
     }
 ];
 //# sourceMappingURL=UserData.js.map

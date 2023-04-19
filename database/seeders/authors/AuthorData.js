@@ -25,6 +25,10 @@ exports.authors = [
     {
         name: "José Emilio Pacheco",
         nationality: "México"
+    },
+    {
+        name: "Mariano A.C. Rodríguez",
+        nationality: "México"
     }
 ];
 //# sourceMappingURL=AuthorData.js.map

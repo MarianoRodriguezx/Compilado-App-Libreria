@@ -14,7 +14,7 @@ const isPrivate = Env_1.default.get('IS_PRIVATE');
 class EditorialsController {
     async index({ auth, view }) {
         const editorials = await Editorial_1.default.query()
-            .orderBy('id', 'asc');
+            .orderBy('id', 'desc');
         const data = {
             list: editorials,
             isPrivate: isPrivate,
@@ -50,7 +50,7 @@ class EditorialsController {
     async getActiveEditorials({ auth }) {
         const editorials = await Editorial_1.default.query()
             .where('status', true)
-            .orderBy('id', 'asc');
+            .orderBy('id', 'desc');
         const data = {
             list: editorials,
             isPrivate: isPrivate,

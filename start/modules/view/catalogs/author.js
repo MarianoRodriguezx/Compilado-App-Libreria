@@ -9,5 +9,5 @@ Route_1.default.group(() => {
     Route_1.default.get('get/active/authors', 'AuthorsController.getActiveAuthors');
 })
     .namespace('App/Controllers/Http/Catalogs')
-    .middleware(['auth']);
+    .middleware(['auth', 'verifyUser']);
 //# sourceMappingURL=author.js.map

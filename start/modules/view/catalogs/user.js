@@ -9,5 +9,5 @@ Route_1.default.group(() => {
     Route_1.default.get('get/active/users', 'UsersController.getActiveUsers');
 })
     .namespace('App/Controllers/Http/Catalogs')
-    .middleware(['auth', 'adminRole']);
+    .middleware(['auth', 'verifyUser', 'adminRole']);
 //# sourceMappingURL=user.js.map

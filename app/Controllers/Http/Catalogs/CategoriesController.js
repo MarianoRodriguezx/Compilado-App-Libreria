@@ -14,7 +14,7 @@ const isPrivate = Env_1.default.get('IS_PRIVATE');
 class CategoriesController {
     async index({ auth, view }) {
         const categories = await Category_1.default.query()
-            .orderBy('id', 'asc');
+            .orderBy('id', 'desc');
         const data = {
             list: categories,
             isPrivate: isPrivate,
@@ -50,7 +50,7 @@ class CategoriesController {
     async getActiveCategories({ auth }) {
         const categories = await Category_1.default.query()
             .where('status', true)
-            .orderBy('id', 'asc');
+            .orderBy('id', 'desc');
         const data = {
             list: categories,
             isPrivate: isPrivate,

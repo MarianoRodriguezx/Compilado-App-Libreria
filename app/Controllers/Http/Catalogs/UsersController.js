@@ -13,7 +13,7 @@ const isPrivate = Env_1.default.get('IS_PRIVATE');
 class UsersController {
     async index({ auth, view }) {
         const users = await User_1.default.query()
-            .orderBy('id', 'asc');
+            .orderBy('id', 'desc');
         const data = {
             list: users,
             isPrivate: isPrivate,
@@ -49,7 +49,7 @@ class UsersController {
     async getActiveUsers({ auth }) {
         const users = await User_1.default.query()
             .where('status', true)
-            .orderBy('id', 'asc');
+            .orderBy('id', 'desc');
         const data = {
             list: users,
             isPrivate: isPrivate,

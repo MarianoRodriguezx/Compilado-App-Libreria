@@ -40,6 +40,8 @@ class AuthController {
                 return response.redirect('/dashboard');
             }
             else {
+                user.verified = false;
+                await user.save();
                 const signedRoute = Route_1.default.builder()
                     .params({ userId: auth.user.id })
                     .makeSigned('/sendMail', { expiresIn: '1m' });
@@ -64,6 +66,35 @@ class AuthController {
             user: auth.user
         };
         return view.render('pages/auth/profile', data);
+    }
+    async changePassword({ auth, view }) {
+        const data = {
+            user: auth.user
+        };
+        return view.render('pages/auth/change_password', data);
+    }
+    async updatePassword({ auth, session, response, request }) {
+        try {
+            const user = await User_1.default.findOrFail(auth.user.id);
+            const password = request.input('password');
+            const confirmation = request.input('confirmation');
+            if (password !== confirmation) {
+                session.flash('form', 'Las contraseñas no coinciden');
+                return response.redirect().back();
+            }
+            user.password = password;
+            await user.save();
+            session.flash('success', 'Contraseña actualizada correctamente');
+            return response.redirect().back();
+        }
+        catch (e) {
+            console.log(e);
+            session.flash('form', 'Formulario inválido');
+            return response.redirect().back();
+        }
+    }
+    async getRole({ auth }) {
+        return auth.user.role;
     }
 }
 exports.default = AuthController;

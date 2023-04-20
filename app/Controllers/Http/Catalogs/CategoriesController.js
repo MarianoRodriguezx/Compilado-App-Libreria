@@ -47,16 +47,11 @@ class CategoriesController {
         };
         return view.render('pages/catalogs/categories/edit', data);
     }
-    async getActiveCategories({ auth }) {
+    async getActiveCategories({}) {
         const categories = await Category_1.default.query()
             .where('status', true)
             .orderBy('id', 'desc');
-        const data = {
-            list: categories,
-            isPrivate: isPrivate,
-            role: auth.user?.role
-        };
-        return data;
+        return categories;
     }
     async store({ request, session, response }) {
         try {
@@ -81,8 +76,7 @@ class CategoriesController {
                 const category = await Category_1.default.findOrFail(params.id);
                 await category.merge(categoryData);
                 await category.save();
-                session.flash('form', 'Categoría editada correctamente');
-                return response.redirect().back();
+                return response.redirect('/categories');
             }
             else {
                 session.flash('form', 'Token inválido');
@@ -103,7 +97,7 @@ class CategoriesController {
                 const category = await Category_1.default.findOrFail(params.id);
                 category.status = !category.status;
                 await category.save();
-                session.flash('form', 'Categoría eliminada correctamente');
+                session.flash('success', 'Categoría actualizada correctamente');
                 return response.redirect().back();
             }
             else {

@@ -81,8 +81,7 @@ class AuthorsController {
                 const author = await Author_1.default.findOrFail(params.id);
                 await author.merge(authorData);
                 await author.save();
-                session.flash('form', 'Autor editada correctamente');
-                return response.redirect().back();
+                return response.redirect('/authors');
             }
             else {
                 session.flash('form', 'Token inválido');
@@ -103,7 +102,7 @@ class AuthorsController {
                 const author = await Author_1.default.findOrFail(params.id);
                 author.status = !author.status;
                 await author.save();
-                session.flash('form', 'Autor eliminada correctamente');
+                session.flash('success', 'Autor actualizado correctamente');
                 return response.redirect().back();
             }
             else {

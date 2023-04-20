@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.books = void 0;
+exports.booksProd = exports.books = void 0;
 const Env_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Env"));
-const imageBasePath = Env_1.default.get('NODE_ENV') === 'development' ? 'testing/images/' : 'oficial/images/';
-const pdfBasePath = Env_1.default.get('NODE_ENV') === 'development' ? 'testing/pdf/' : 'oficial/pdf/';
+const nodeEnv = Env_1.default.get('NODE_ENV');
+const imageBasePath = nodeEnv === 'development' ? 'testing/images/' : 'oficial/images/';
+const pdfBasePath = nodeEnv === 'development' ? 'testing/pdf/' : 'oficial/pdf/';
 exports.books = [
     {
         name: "A la orilla de la luz",
@@ -59,4 +60,5 @@ exports.books = [
         editorial_id: 5,
     }
 ];
+exports.booksProd = [];
 //# sourceMappingURL=BookData.js.map

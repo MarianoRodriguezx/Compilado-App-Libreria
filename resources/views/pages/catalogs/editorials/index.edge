@@ -3,7 +3,10 @@
 
 @section('body')
 
-    @include('partials/navbar')
+    @!component('components/navbar', {
+    isPrivate: isPrivate,
+    role: role
+  })  
 
     <div class="container">
 
@@ -12,7 +15,7 @@
         <div class="bt">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal2"><img
                     width="20px"
-                    src="https://cdn.icon-icons.com/icons2/1993/PNG/512/add_circle_create_expand_new_plus_icon_123218.png">
+                    src="{{ asset('assets/images/addicon.png') }}">
                 Agregar
             </button>
         </div>
@@ -67,9 +70,9 @@
                     <td>{{item.location}}</td>
                     <td>
                         @if(item.status)
-                        <img src="https://cdn-icons-png.flaticon.com/512/4676/4676041.png" width="35px">
+                        <img src="{{ asset('assets/images/isactive.png') }}" width="35px">
                         @else
-                        <img src="https://cdn-icons-png.flaticon.com/512/5978/5978441.png" width="35px">
+                        <img src="{{ asset('assets/images/isinactive.png') }}" width="35px">
                         @endif
                     </td>
                     <td>
@@ -88,7 +91,6 @@
                                     <form action="{{`/editorials/${item.id}?_method=DELETE`}}" method="POST">
                                         <div class="modal-body">
     
-                                            {{item.id}}
                                             <div class="mb-3">
                                                 <label for="edit_token" class="form-label">Token del Administrador</label>
                                                 <input type="text" class="form-control" id="edit_token" name="edit_token"
@@ -138,17 +140,5 @@
                 @end
             </tbody>
         </table>
-
-    <div style="color:white">
-        <p>---------------------------</p>
-        <p>Es VPN: {{isPrivate}}</p> {{--  Determina si la conexión viene de VPN o Dominio  --}}
-        <p>Rol: {{role}}</p> {{--  Determina el rol (1=normal, 2=supervisor, 3=admin)  --}}
-        <p>Lista: {{list}}</p> {{--  Lista de categorías  --}}
-        <br>
-        <p>---------------------------</p>
-        <a class="nav-link" href="authors/create">Crear</a>
-        <a class="nav-link" href="authors/1">Ver</a> {{--  Ejemplo de ID "1"  --}}
-        <a class="nav-link" href="authors/1/edit">editar</a> {{--  Ejemplo de ID "1"  --}}
-    </div>
 
 @end

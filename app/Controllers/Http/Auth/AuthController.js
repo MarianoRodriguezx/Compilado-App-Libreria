@@ -7,6 +7,7 @@ const User_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Models/User"))
 const LoginValidator_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Validators/Auth/LoginValidator"));
 const Env_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Env"));
 const Route_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Route"));
+const isPrivate = Env_1.default.get('IS_PRIVATE');
 class AuthController {
     async register({}) {
         return "Método obsoleto";
@@ -63,13 +64,17 @@ class AuthController {
     }
     async profile({ auth, view }) {
         const data = {
-            user: auth.user
+            user: auth.user,
+            isPrivate: isPrivate,
+            role: auth.user?.role
         };
         return view.render('pages/auth/profile', data);
     }
     async changePassword({ auth, view }) {
         const data = {
-            user: auth.user
+            user: auth.user,
+            isPrivate: isPrivate,
+            role: auth.user?.role
         };
         return view.render('pages/auth/change_password', data);
     }

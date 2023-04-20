@@ -17,7 +17,7 @@ class UpdateBookValidator {
             ]),
             description: Validator_1.schema.string({ trim: true }, [
                 Validator_1.rules.required(),
-                Validator_1.rules.maxLength(255)
+                Validator_1.rules.maxLength(1000)
             ]),
             author_id: Validator_1.schema.number([
                 Validator_1.rules.required(),

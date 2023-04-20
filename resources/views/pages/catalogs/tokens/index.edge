@@ -3,7 +3,10 @@
 
 @section('body')
 
-@include('partials/navbar')
+@!component('components/navbar', {
+    isPrivate: isPrivate,
+    role: role
+  })  
 
 
 <div style="color:white">
@@ -18,9 +21,9 @@
     @endif
 
     {{-- Generar Token automáticamente en base al rol. No requiere mandar parámetros --}}
-    <form action="generate/token" method="POST">
+    {{--  <form action="generate/token" method="POST">
         <button type="submit">Generar Token</button>
-    </form>
+    </form>  --}}
 
     <div class="container">
         <br>
@@ -29,7 +32,7 @@
         <div class="bt2">
             <form action="generate/token" method="POST">
                 <button style="width: 100%;" class="btn btn-success" type="submit"><img width="20px"
-                        src="https://cdn.icon-icons.com/icons2/1993/PNG/512/add_circle_create_expand_new_plus_icon_123218.png">Generar
+                        src="{{ asset('assets/images/addicon.png') }}">Generar
                     Token</button>
             </form>
         </div>
@@ -55,9 +58,9 @@
                         <td>{{item.linked_table}}</td>
                         <td>
                             @if(item.status)
-                            <img src="https://cdn-icons-png.flaticon.com/512/4676/4676041.png" width="35px">
+                            <img src="{{ asset('assets/images/isactive.png') }}" width="35px">
                             @else
-                            <img src="https://cdn-icons-png.flaticon.com/512/5978/5978441.png" width="35px">
+                            <img src="{{ asset('assets/images/isinactive.png') }}" width="35px">
                             @endif
                         </td>
                         <td>{{+item.type === 1 ? 'Editar' : 'Eliminar'}}</td>
@@ -68,27 +71,6 @@
                 </tbody>
             </table>
         </div>
-
-
-
-        @each(item in list)
-        <p>----------------------</p>
-        <p>Token: {{item.token}}</p>
-        <p>Tabla: {{item.linked_table}}</p>
-        <p>Tipo: {{+item.type === 1 ? 'Editar' : 'Eliminar'}}</p>
-        <p>Status: {{item.status}}</p>
-        <p>Token usado por: {{item.used_email}}</p>
-        <p>Token generado por: {{item.generatedBy.username}}</p>
-        @end
-        <br><br>
-        <p>***************************************</p>
-        <h1>Index de tokens</h1>
-        <p>---------------------------</p>
-        <p>Es VPN: {{isPrivate}}</p> {{-- Determina si la conexión viene de VPN o Dominio --}}
-        <p>Rol: {{role}}</p> {{-- Determina el rol (1=normal, 2=supervisor, 3=admin) --}}
-        <p>Lista: {{list}}</p> {{-- Lista de categorías --}}
-        <br>
-        <p>---------------------------</p>
 
     </div>
 

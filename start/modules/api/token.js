@@ -8,8 +8,7 @@ Route_1.default.group(() => {
     Route_1.default.post('generate/token', 'GeneratedTokensController.generateToken').as('generateToken');
     Route_1.default.get('tokens', 'GeneratedTokensController.index').as('index');
 })
-    .namespace('App/Controllers/Http/Tokens').middleware(['auth', 'verifyUser', 'privilegeRole']);
-;
+    .namespace('App/Controllers/Http/Tokens').middleware(['auth', 'verifyUser', 'privilegeRole', 'privateOnly']);
 Route_1.default.group(() => {
     Route_1.default.post('generate/token/f/edit', 'GeneratedTokensController.forceTokenEdit').as('forceTokenEdit');
     Route_1.default.post('generate/token/f/delete', 'GeneratedTokensController.forceTokenDelete').as('forceTokenDelete');

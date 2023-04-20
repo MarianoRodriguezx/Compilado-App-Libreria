@@ -34,6 +34,7 @@ Server_1.default.middleware.registerNamed({
     verifyUser: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/VerifyUser'))),
     signedRoute: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/SignedRoute'))),
     adminRole: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/AdminRole'))),
-    privilegeRole: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/PrivilegeRole')))
+    privilegeRole: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/PrivilegeRole'))),
+    privateOnly: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/PrivateOnly')))
 });
 //# sourceMappingURL=kernel.js.map

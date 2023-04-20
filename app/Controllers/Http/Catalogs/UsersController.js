@@ -80,8 +80,7 @@ class UsersController {
                 const user = await User_1.default.findOrFail(params.id);
                 await user.merge(authorData);
                 await user.save();
-                session.flash('form', 'User editada correctamente');
-                return response.redirect().back();
+                return response.redirect('/users');
             }
             else {
                 session.flash('form', 'Token inválido');
@@ -102,7 +101,7 @@ class UsersController {
                 const user = await User_1.default.findOrFail(params.id);
                 user.status = !user.status;
                 await user.save();
-                session.flash('form', 'User eliminada correctamente');
+                session.flash('success', 'Usuario actualizado correctamente');
                 return response.redirect().back();
             }
             else {

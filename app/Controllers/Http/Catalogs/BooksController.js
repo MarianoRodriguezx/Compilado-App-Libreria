@@ -27,10 +27,17 @@ class BooksController {
             .preload('author')
             .preload('category')
             .preload('editorial')
+            .where('status', true)
             .orderBy('id', 'desc');
-        const authors = await Author_1.default.all();
-        const categories = await Category_1.default.all();
-        const editoriales = await Editorial_1.default.all();
+        const authors = await Author_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
+        const categories = await Category_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
+        const editoriales = await Editorial_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
         const data = {
             list: books,
             isPrivate: isPrivate,
@@ -38,7 +45,8 @@ class BooksController {
             spacesPath: fileDriverPath,
             authors: authors,
             categories: categories,
-            editoriales: editoriales
+            editoriales: editoriales,
+            showAll: false
         };
         return view.render('pages/catalogs/books/index', data);
     }
@@ -57,11 +65,23 @@ class BooksController {
             .preload('category')
             .preload('editorial')
             .firstOrFail();
+        const authors = await Author_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
+        const categories = await Category_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
+        const editoriales = await Editorial_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
         const data = {
             item: book,
             isPrivate: isPrivate,
             role: auth.user?.role,
-            spacesPath: fileDriverPath
+            spacesPath: fileDriverPath,
+            authors: authors,
+            categories: categories,
+            editoriales: editoriales
         };
         return view.render('pages/catalogs/books/show', data);
     }
@@ -74,16 +94,33 @@ class BooksController {
         };
         return view.render('pages/catalogs/books/edit', data);
     }
-    async getActiveBooks({ auth }) {
+    async getActiveBooks({ auth, view }) {
         const books = await Book_1.default.query()
+            .preload('postedBy')
+            .preload('author')
+            .preload('category')
+            .preload('editorial')
+            .orderBy('id', 'desc');
+        const authors = await Author_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
+        const categories = await Category_1.default.query()
+            .where('status', true)
+            .orderBy('id', 'desc');
+        const editoriales = await Editorial_1.default.query()
             .where('status', true)
             .orderBy('id', 'desc');
         const data = {
             list: books,
             isPrivate: isPrivate,
-            role: auth.user?.role
+            role: auth.user?.role,
+            spacesPath: fileDriverPath,
+            authors: authors,
+            categories: categories,
+            editoriales: editoriales,
+            showAll: true
         };
-        return data;
+        return view.render('pages/catalogs/books/index', data);
     }
     async store({ request, session, response, auth }) {
         try {
@@ -131,11 +168,11 @@ class BooksController {
             await request.validate(UpdateBookValidator_1.default);
             const editToken = request.input("edit_token");
             if (+auth.user.role === +User_1.default.SUPERVISOR.id || await this.useToken(GeneratedToken_1.default.EDIT.id, editToken, auth.user.email)) {
-                const bookData = request.only(Book_1.default.store);
+                const bookData = request.only(Book_1.default.update);
                 const book = await Book_1.default.findOrFail(params.id);
                 await book.merge(bookData);
                 await book.save();
-                session.flash('form', 'Libro editado correctamente');
+                session.flash('success', 'Libro editado correctamente');
                 return response.redirect().back();
             }
             else {
@@ -157,7 +194,7 @@ class BooksController {
                 const book = await Book_1.default.findOrFail(params.id);
                 book.status = !book.status;
                 await book.save();
-                session.flash('form', 'Libro eliminada correctamente');
+                session.flash('success', 'Libro actulizado correctamente');
                 return response.redirect().back();
             }
             else {
@@ -189,7 +226,7 @@ class BooksController {
             return false;
         }
     }
-    async updateCover({ request, session, response, params }) {
+    async updateCover({ request, session, response, params, auth }) {
         try {
             const book = await Book_1.default.findOrFail(params.id);
             const filename = book.cover_path.split('/').pop()?.split('.')[0];
@@ -201,28 +238,35 @@ class BooksController {
             });
             const imageData = await request.validate({ schema: imageDataSchema });
             const myImage = imageData.image_file;
-            if (await Drive_1.default.exists(book.cover_path)) {
-                await Drive_1.default.delete(book.cover_path);
+            const editToken = request.input("edit_token");
+            if (+auth.user.role === +User_1.default.SUPERVISOR.id || await this.useToken(GeneratedToken_1.default.EDIT.id, editToken, auth.user.email)) {
+                if (await Drive_1.default.exists(book.cover_path)) {
+                    await Drive_1.default.delete(book.cover_path);
+                }
+                const imageBasePath = Env_1.default.get('NODE_ENV') === 'development' ? 'testing/images/' : 'oficial/images/';
+                const imagePath = `${imageBasePath}${filename}.${myImage.extname}`;
+                await myImage.move(Application_1.default.tmpPath('uploads'), {
+                    name: `${filename}.${myImage.extname}`,
+                    overwrite: true
+                });
+                await Drive_1.default.putStream(imagePath, fs_1.default.createReadStream(Application_1.default.tmpPath(`uploads/${filename}.${myImage.extname}`)), {});
+                book.cover_path = imagePath;
+                await book.save();
+                session.flash('success', 'Portada editada correctamente');
+                return response.redirect().back();
             }
-            const imageBasePath = Env_1.default.get('NODE_ENV') === 'development' ? 'testing/images/' : 'oficial/images/';
-            const imagePath = `${imageBasePath}${filename}.${myImage.extname}`;
-            await myImage.move(Application_1.default.tmpPath('uploads'), {
-                name: `${filename}.${myImage.extname}`,
-                overwrite: true
-            });
-            await Drive_1.default.putStream(imagePath, fs_1.default.createReadStream(Application_1.default.tmpPath(`uploads/${filename}.${myImage.extname}`)), {});
-            book.cover_path = imagePath;
-            await book.save();
-            session.flash('form', 'Libro guardado correctamente');
-            return response.redirect().back();
+            else {
+                session.flash('form', 'Token inválido');
+                return response.redirect().back();
+            }
         }
         catch (e) {
             console.log(e);
-            session.flash('form', 'Formulario inválido');
+            session.flash('form', 'Archivo inválido');
             return response.redirect().back();
         }
     }
-    async updatePdf({ request, session, response, params }) {
+    async updatePdf({ request, session, response, params, auth }) {
         try {
             const book = await Book_1.default.findOrFail(params.id);
             const filename = book.book_path.split('/').pop()?.split('.')[0];
@@ -234,20 +278,27 @@ class BooksController {
             });
             const pdfData = await request.validate({ schema: pdfDataSchema });
             const myPdf = pdfData.pdf_file;
-            if (await Drive_1.default.exists(book.book_path)) {
-                await Drive_1.default.delete(book.book_path);
+            const editToken = request.input("edit_token");
+            if (+auth.user.role === +User_1.default.SUPERVISOR.id || await this.useToken(GeneratedToken_1.default.EDIT.id, editToken, auth.user.email)) {
+                if (await Drive_1.default.exists(book.book_path)) {
+                    await Drive_1.default.delete(book.book_path);
+                }
+                const imageBasePath = Env_1.default.get('NODE_ENV') === 'development' ? 'testing/pdf/' : 'oficial/pdf/';
+                const pdfPath = `${imageBasePath}${filename}.${myPdf.extname}`;
+                await myPdf.move(Application_1.default.tmpPath('uploads'), {
+                    name: `${filename}.${myPdf.extname}`,
+                    overwrite: true
+                });
+                await Drive_1.default.putStream(pdfPath, fs_1.default.createReadStream(Application_1.default.tmpPath(`uploads/${filename}.${myPdf.extname}`)), {});
+                book.book_path = pdfPath;
+                await book.save();
+                session.flash('success', 'Libro guardado correctamente');
+                return response.redirect().back();
             }
-            const imageBasePath = Env_1.default.get('NODE_ENV') === 'development' ? 'testing/pdf/' : 'oficial/pdf/';
-            const pdfPath = `${imageBasePath}${filename}.${myPdf.extname}`;
-            await myPdf.move(Application_1.default.tmpPath('uploads'), {
-                name: `${filename}.${myPdf.extname}`,
-                overwrite: true
-            });
-            await Drive_1.default.putStream(pdfPath, fs_1.default.createReadStream(Application_1.default.tmpPath(`uploads/${filename}.${myPdf.extname}`)), {});
-            book.book_path = pdfPath;
-            await book.save();
-            session.flash('form', 'Libro guardado correctamente');
-            return response.redirect().back();
+            else {
+                session.flash('form', 'Token inválido');
+                return response.redirect().back();
+            }
         }
         catch (e) {
             console.log(e);

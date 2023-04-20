@@ -81,8 +81,7 @@ class EditorialsController {
                 const editorial = await Editorial_1.default.findOrFail(params.id);
                 await editorial.merge(authorData);
                 await editorial.save();
-                session.flash('form', 'Editorial editada correctamente');
-                return response.redirect().back();
+                return response.redirect('/editorials');
             }
             else {
                 session.flash('form', 'Token inválido');
@@ -103,7 +102,7 @@ class EditorialsController {
                 const editorial = await Editorial_1.default.findOrFail(params.id);
                 editorial.status = !editorial.status;
                 await editorial.save();
-                session.flash('form', 'Editorial eliminada correctamente');
+                session.flash('success', 'Editorial actualizada correctamente');
                 return response.redirect().back();
             }
             else {
